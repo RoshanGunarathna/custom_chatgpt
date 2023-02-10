@@ -1,3 +1,4 @@
+import 'package:custom_chatgpt/constants/constant.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
@@ -13,7 +14,7 @@ class VoiceServices {
     required String text,
   }) async {
     const String _url = 'http://api.voicerss.org';
-    const String _key = 'voicerss API key';
+    const String _key = voiceApi;
 
     try {
       http.Response res = await http.post(Uri.parse(

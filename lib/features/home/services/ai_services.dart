@@ -15,6 +15,7 @@ class AiServices {
   }) async {
     late String? botMsg;
 
+    debugPrint('In the service file : $msg');
     try {
       http.Response res = await http.post(
         Uri.parse(serverUrl),
