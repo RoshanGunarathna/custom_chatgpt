@@ -112,6 +112,45 @@ class _HomeScreenState extends State<HomeScreen> {
                           ? 'Type here or speak.....'
                           : 'Type here....',
                       contentPadding: const EdgeInsets.only(left: 10)),
+                  onSubmitted: (text) async {
+                    if (_myMsgController.text.isNotEmpty) {
+                      setState(() {
+                        _text = _myMsgController.text;
+                        _myMsgController.text = '';
+                      });
+
+                      //add user msg to chat list
+                      _messages.add(
+                          ChatMessage(text: _text, type: ChatMessageType.user));
+                      FocusManager.instance.primaryFocus?.unfocus();
+                      autoScrollMethod();
+
+                      //sent to ai
+                      String? msg = await _aiServices.sendMsgToAi(
+                          context: context, msg: _text);
+
+                      //get voice
+                      if (msg != null) {
+                        if (msg.isNotEmpty) {
+                          _voiceServices.requestVoice(
+                              context: context,
+                              voiceType: "en-US-1",
+                              text: msg);
+                        }
+                      } else {
+                        showSnackBar(context, 'My voice is gone');
+                      }
+
+                      //add ai msg to chat list
+                      if (msg != null) {
+                        setState(() {
+                          _messages.add(ChatMessage(
+                              text: msg, type: ChatMessageType.bot));
+                        });
+                        autoScrollMethod();
+                      }
+                    }
+                  },
                 ),
               ),
               IconButton(

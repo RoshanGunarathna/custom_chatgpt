@@ -1,42 +1,28 @@
-
-
-const { Configuration, OpenAIApi } = require("openai");
+//IMPORTS FROM PACKAGES
 const express = require('express');
 const bodyParser = require('body-parser')
 const cors = require('cors')
 
-const configuration = new Configuration({
-    organization: "Orgenization key",
-    apiKey: "API-Key",
-});
-
-const openai = new OpenAIApi(configuration);
+//IMPORT FROM OTHER FILES
+ const chatgptRouter = require("./routes/chatgpt");
 
 
 
-const app = express()
-app.use(bodyParser.json())
-app.use(cors())
+//INIT
+const PORT = process.env.PORT || 3000;
+const app = express();
 
-const port = 3000
 
-app.post('/', async (req, res) => {
-  const {message}= req.body;
-  console.log(message)
-  const response = await openai.createCompletion({
-    model: "text-davinci-003",
-    prompt: `${message}`,
-    max_tokens: 100,
-    temperature: 0.5,
-  });
 
-res.json({
-    
-    message: response.data.choices[0].text,
-})
-})
+//Middleware
+app.use(bodyParser.json());
+app.use(cors());
+app.use(chatgptRouter);
 
-app.listen(port, ()=>{
-  console.log(`Example app listening at http://localhost:${port}`)
+
+
+
+app.listen(PORT, "0.0.0.0", ()=>{
+  console.log(`Example app listening at http://localhost:${PORT}`)
 })
 
