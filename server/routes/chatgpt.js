@@ -16,7 +16,7 @@ chatgptRouter.post('/', async (req, res) => {
         const response = await openai.createCompletion({
           model: "text-davinci-003",
           prompt: `
-          Make and beautiful pop song using these words ${message}. 
+          Make an beautiful pop song using these words ${message}. 
           `,
           max_tokens: 500,
           temperature: 0.5,
